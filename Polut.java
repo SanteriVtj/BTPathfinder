@@ -13,7 +13,17 @@ public class Polut {
         howMany[0][0] = 1;
         howMany[1][0] = 1;
         findPaths(1,0,visited,2,howMany);
+//        int[][] x = {
+//            {1,8,9,0},
+//            {2,7,10,0},
+//            {3,6,11,0},
+//            {4,5,12,0}
+//        };
 
+//        int[][] a = {{3,3,3,3},{4,4,4,0}};
+//        System.out.println(oneWay(a, 4));
+//        int[][] a = changeZeros(0,3,x);
+//        for (int[] i : a) System.out.println(Arrays.toString(i));
         return pathCount * 2;
     }
     
@@ -32,12 +42,13 @@ public class Polut {
                 howMany[1][y] += 1;
 //                for (int[] i : visited) System.out.println(Arrays.toString(i));
 //                if (divide(howMany,visited.length - 1)) {
-                if (((test(x - 1, y, visited) && test(x + 1, y, visited) && test(x, y + 1, visited) && test(x, y - 1, visited)
-                        && test(x - 1, y - 1, visited) && test(x + 1, y + 1, visited) && test(x + 1, y - 1, visited) && test(x - 1, y + 1, visited)) || count == (visited.length * visited.length) - 1)
-                        && divide(howMany, visited.length - 1)) {
+
+//                  ((test(x - 1, y, visited) && test(x + 1, y, visited) && test(x, y + 1, visited) && test(x, y - 1, visited)
+//                        && test(x - 1, y - 1, visited) && test(x + 1, y + 1, visited) && test(x + 1, y - 1, visited) && test(x - 1, y + 1, visited)) || count == (visited.length * visited.length) - 1)
+                if (div(x,y,visited)) {
 //                    System.out.println("***");
-                    for (int[] i : visited) System.out.println(Arrays.toString(i));
-                    System.out.println("-------------------");
+//                    for (int[] i : visited) System.out.println(Arrays.toString(i));
+//                    System.out.println("-------------------");
                     if (doesItExist(x + 1, y, visited.length)
                             && visited[x + 1][y] == 0) findPaths(x + 1, y, visited, count + 1, howMany);
                     if (doesItExist(x, y + 1, visited.length)
@@ -47,7 +58,6 @@ public class Polut {
                     if (doesItExist(x, y - 1, visited.length)
                             && visited[x][y - 1] == 0) findPaths(x, y - 1, visited, count + 1, howMany);
                 }
-//                }
             }
             visited[x][y] = 0;
             howMany[0][x] -= 1;
@@ -56,13 +66,44 @@ public class Polut {
     }
     
     public boolean oneWay(int[][] howMany, int n) {
-        int row = 0, column = 0;
-        for (int i = 0; i < howMany.length; i++) {
-            if (howMany[0][i] < n) row++;
-            if (howMany[1][i] < n) column++;
+        int row = 0, column = 0, aRow = 0, aColumn = 0;
+        for (int i = 0; i < howMany[0].length; i++) {
+            if (howMany[0][i] == n) row++;
+            if (howMany[0][i] == n - 1) aRow++;
+            if (howMany[1][i] == n) column++;
+            if (howMany[1][i] == n - 1) aColumn++;
         }
-        if (row > n - 1 && column > n - 1) return false;
+        if ((row == n - 1 && aColumn == n) || (aRow == n && column == n - 1)) return false;
         return true;
+    }
+    
+    public boolean div(int x, int y, int[][] visited) {
+        int[][] a = new int[visited.length][visited.length];
+        for (int i = 0; i < visited.length; i++) {
+            for (int j = 0; j < visited.length; j++) {
+                a[i][j] = visited[i][j];
+            }
+        }
+        if (doesItExist(x + 1,y,visited.length) && visited[x + 1][y] == 0) a = changeZeros(x + 1,y,a);
+        else if (doesItExist(x - 1,y,visited.length) && visited[x - 1][y] == 0) a = changeZeros(x - 1,y,a);
+        else if (doesItExist(x,y + 1,visited.length) && visited[x][y + 1] == 0) a = changeZeros(x,y + 1,a);
+        else if (doesItExist(x,y - 1,visited.length) && visited[x][y - 1] == 0) a = changeZeros(x,y - 1,a);
+        
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a.length; j++) {
+                if (a[i][j] == 0) return false;
+            }
+        }
+        return true;
+    } 
+    
+    public int[][] changeZeros(int x, int y, int[][] a) {
+        a[x][y] = -1;
+        if (doesItExist(x + 1, y, a.length) && a[x + 1][y] == 0) changeZeros(x + 1, y, a);
+        if (doesItExist(x - 1, y, a.length) && a[x - 1][y] == 0) changeZeros(x - 1, y, a);
+        if (doesItExist(x, y + 1, a.length) && a[x][y + 1] == 0) changeZeros(x, y + 1, a);
+        if (doesItExist(x, y - 1, a.length) && a[x][y - 1] == 0) changeZeros(x, y - 1, a);
+        return a;
     }
     
     public boolean divide(int[][] howMany, int n) {                                             //Tutkii jakaako reitti taulukon kahtia esim näin:

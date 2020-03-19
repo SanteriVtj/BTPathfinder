@@ -7,6 +7,6 @@ public class Main {
 //        System.out.println(p.laske(2)); // 2
 //        System.out.println(p.laske(3)); // 8
 //        System.out.println(p.laske(4)); // 52
-        System.out.println(p.laske(4));
+        System.out.println(p.laske(7));
     }
 }
