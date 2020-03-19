@@ -13,42 +13,18 @@ public class Polut {
         howMany[0][0] = 1;
         howMany[1][0] = 1;
         findPaths(1,0,visited,2,howMany);
-//        int[][] x = {
-//            {1,8,9,0},
-//            {2,7,10,0},
-//            {3,6,11,0},
-//            {4,5,12,0}
-//        };
-
-//        int[][] a = {{3,3,3,3},{4,4,4,0}};
-//        System.out.println(oneWay(a, 4));
-//        int[][] a = changeZeros(0,3,x);
-//        for (int[] i : a) System.out.println(Arrays.toString(i));
         return pathCount * 2;
     }
     
     public void findPaths(int x, int y, int[][] visited, int count, int[][] howMany) {
-//        for (int[] i : howMany) System.out.println(Arrays.toString(i));               //####testi tulostuksia
-//        System.out.println("===***===***===");
-//        for (int[] i : visited) System.out.println(Arrays.toString(i));
-//        System.out.println("------------");
         if (count == (visited.length * visited.length)) {
-//            System.out.println("ADDED");
             pathCount++;
         } else {
             if (visited[x][y] == 0) {
                 visited[x][y] = count;
                 howMany[0][x] += 1;
                 howMany[1][y] += 1;
-//                for (int[] i : visited) System.out.println(Arrays.toString(i));
-//                if (divide(howMany,visited.length - 1)) {
-
-//                  ((test(x - 1, y, visited) && test(x + 1, y, visited) && test(x, y + 1, visited) && test(x, y - 1, visited)
-//                        && test(x - 1, y - 1, visited) && test(x + 1, y + 1, visited) && test(x + 1, y - 1, visited) && test(x - 1, y + 1, visited)) || count == (visited.length * visited.length) - 1)
                 if (div(x,y,visited)) {
-//                    System.out.println("***");
-//                    for (int[] i : visited) System.out.println(Arrays.toString(i));
-//                    System.out.println("-------------------");
                     if (doesItExist(x + 1, y, visited.length)
                             && visited[x + 1][y] == 0) findPaths(x + 1, y, visited, count + 1, howMany);
                     if (doesItExist(x, y + 1, visited.length)
